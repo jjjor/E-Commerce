@@ -1,3 +1,88 @@
-<br>
+<title>Lista de Produtos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
 
-<h1> Products list </h1>
+        h2 {
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            overflow: hidden;
+        }
+
+        li:hover {
+            background-color: #e0e0e0;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #666;
+        }
+
+        a {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 3px;
+        }
+
+        .btn-edit {
+            background-color: #3498db; /* Green */
+        }
+
+        .btn-delete {
+            background-color: #f44336; /* Red */
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #52AC6C; /* Blue */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+
+    
+
+<h2>Lista de Produtos</h2>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - R$ {{ product.price }}
+                <a href="{% url 'product_update' product.id %}" class='btn-edit'>Edit</a>
+                <a href="{% url 'product_delete' product.id %}" class='btn-delete'>Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <button><a href="{% url 'product_create' %}">Create new product</a></button>
+    <button><a href="{% url 'index' %}">Return to index</a></button>

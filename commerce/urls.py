@@ -22,4 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.IndexView.as_view(), name='index'),
     path('products/', views.ProductListView.as_view(), name='products'),
+    path('product_create/', views.ProductCreateView.as_view(), name='product_create'),
+    path('product_delete/<int:id>/', views.ProductDeleteView.as_view(), name='product_delete'),
+    path('product_update/<int:id>/', views.ProductUpdateView.as_view(), name='product_update'),
 ]
