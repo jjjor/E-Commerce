@@ -9,11 +9,31 @@ from django.views.generic import ListView, DetailView, DeleteView, CreateView, U
 class IndexView(TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["products"] = Product.objects.all()
+        return context
+    
+    def get_queryset(self):
+        queryset = super(IndexView, self).get_queryset()
+
+        data = self.request.GET
+        search = data.get('search')
+
+        if search:
+            queryset = queryset.filter(
+                queryset(name_icontains=search)
+            )
+
 class ProductListView(ListView):
 
     template_name = 'products.html'
     model = Product
-    context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["products"] = Product.objects.all()
+        return context
 
 class ProductCreateView(CreateView):
 
@@ -40,3 +60,4 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("products")
+    

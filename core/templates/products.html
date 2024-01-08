@@ -72,17 +72,24 @@
         }
     </style>
 
-    
-
 <h2>Lista de Produtos</h2>
+
     <ul>
         {% for product in products %}
-            <li>{{ product.name }} - R$ {{ product.price }}
-                <a href="{% url 'product_update' product.id %}" class='btn-edit'>Edit</a>
-                <a href="{% url 'product_delete' product.id %}" class='btn-delete'>Delete</a>
-            </li>
+            {% if user.is_superuser %}
+                <li>{{ product.name }} - R$ {{ product.price }}
+                    <a href="{% url 'product_update' product.id %}" class='btn-edit'>Edit</a>
+                    <a href="{% url 'product_delete' product.id %}" class='btn-delete'>Delete</a>
+                </li>
+            {% else %}
+                <li>{{ product.name }} - R$ {{ product.price }}</li>
+            {% endif %}
         {% endfor %}
     </ul>
 
-    <button><a href="{% url 'product_create' %}">Create new product</a></button>
-    <button><a href="{% url 'index' %}">Return to index</a></button>
+    {% if user.is_superuser %}
+        <button><a href="{% url 'product_create' %}">Create new product</a></button>
+        <button><a href="{% url 'index' %}">Return to index</a></button>
+    {% else %}
+        <button><a href="{% url 'index' %}">Return to index</a></button>
+    {% endif %}

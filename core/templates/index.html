@@ -5,16 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+    
+        h2 {
+            color: #333;
+            padding-top: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        #product {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+    
+        #product:hover {
+            background-color: #f0f0f0;
+        }
+    
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    
+        .product-price {
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
     <title>Stocking</title>
 </head>
 <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Products Stocking</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        <input id="searchInput" class="form-control form-control-dark w-100" type="text" placeholder="Search product" aria-label="Search">
+
         <ul class="navbar-nav px-3">
           <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
+            <a class="nav-link" href="#">Search</a>
           </li>
         </ul>
     </nav>
@@ -31,22 +72,49 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'products' %}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    Produtos
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 a4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Products list
                   </a>
                 </li>
               </ul>
             </div>
           </nav>
   
-          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 main-content">
+            <h2>Registred products</h2>
             
-           {% block center %}
+            {% if products %}
+                <li>
+                    {% for product in products %}
+                        <li id='product' class="product-list-item">{{ product.name }} - R$ {{ product.price }}</li>
+                    {% endfor %}
+                </li>
+            {% else %}
+                <p>Non products registred.</p>
+            {% endif %}
 
-           {% endblock %}
-            
+            {% block center %}
+            {% endblock %}
           </main>
         </div>
       </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var searchTerm = $(this).val().toLowerCase();
+
+            $(".product-list-item").each(function () {
+                var productText = $(this).text().toLowerCase();
+
+                if (productText.indexOf(searchTerm) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+</script>
 </html>
