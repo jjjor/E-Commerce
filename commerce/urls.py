@@ -20,6 +20,6 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index', views.IndexView.as_view(), name='index'),
-    path('products/<int:product_id>', views.ProductListView.as_view(), name='products'),
+    path('index/', views.IndexView.as_view(), name='index'),
+    path('products/', views.ProductListView.as_view(), name='products'),
 ]
