@@ -1,4 +1,4 @@
-<title>Lista de Produtos</title>
+<title>Stock</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -7,6 +7,8 @@
 
         h2 {
             color: #333;
+            text-align: center;
+            justify-content: center;
         }
 
         ul {
@@ -21,6 +23,7 @@
             border-radius: 5px;
             background-color: #f9f9f9;
             overflow: hidden;
+            
         }
 
         li:hover {
@@ -72,7 +75,7 @@
         }
     </style>
 
-<h2>Lista de Produtos</h2>
+<h2>Supermercadin's Stock</h2>
 
     <ul>
         {% for product in products %}
@@ -89,7 +92,7 @@
 
     {% if user.is_superuser %}
         <button><a href="{% url 'product_create' %}">Create new product</a></button>
-        <button><a href="{% url 'index' %}">Return to index</a></button>
+        <button><a href="{% url 'index' %}">Return to home</a></button>
     {% else %}
-        <button><a href="{% url 'index' %}">Return to index</a></button>
+        <button><a href="{% url 'index' %}">Return to home</a></button>
     {% endif %}

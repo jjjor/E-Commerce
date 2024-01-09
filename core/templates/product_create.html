@@ -1,6 +1,6 @@
 
 
-<title>Create new product</title>
+<title>Register a new product</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,10 +54,10 @@
         }
     </style>
 
-<h2>Create new product</h2>
+<h2>Register a new product</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save</button>
-        <button><a href="{% url 'index' %}">Return to index</a></button>
+        <button><a href="{% url 'index' %}">Return to home</a></button>
     </form>
