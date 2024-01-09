@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
+from django.db.models import Q
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView, TemplateView, View
 
 # Create your views here.
@@ -13,17 +14,7 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["products"] = Product.objects.all()
         return context
-    
-    def get_queryset(self):
-        queryset = super(IndexView, self).get_queryset()
 
-        data = self.request.GET
-        search = data.get('search')
-
-        if search:
-            queryset = queryset.filter(
-                queryset(name_icontains=search)
-            )
 
 class ProductListView(ListView):
 
@@ -34,6 +25,14 @@ class ProductListView(ListView):
         context = super().get_context_data(**kwargs)
         context["products"] = Product.objects.all()
         return context
+    
+    # def get_queryset(self):
+    #     query = self.request.GET.get('search')
+
+    #     if query:
+    #         queryset = Product.objects.filter(name_icontains=query)
+    #     else:
+    #         queryset = Product.objects.all()
 
 class ProductCreateView(CreateView):
 
@@ -60,4 +59,44 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("products")
+    
+class CategoryListView(ListView):
+
+    model = Category
+    template_name = 'categories.html'
+    fields = '__all__'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categorys"] = Category.objects.all()
+        return context
+    
+
+class CategoryCreateView(CreateView):
+
+    model = Category
+    template_name = 'category_create.html'
+    form_class = CategoryForm
+    success_url = reverse_lazy('categories')
+
+class CategoryUpdateView(UpdateView):
+         
+        model = Category
+        template_name = 'category_create.html'
+        form_class = CategoryForm
+        pk_url_kwarg = 'id'
+    
+        def get_success_url(self):
+            return reverse_lazy("categories")
+
+class CategoryDeleteView(DeleteView):
+
+    model = Category
+    success_url = reverse_lazy('categories')
+    pk_url_kwarg = 'id'
+
+    def get(self, *args, **kwargs):
+            return self.delete(*args, **kwargs)
+    
+
     

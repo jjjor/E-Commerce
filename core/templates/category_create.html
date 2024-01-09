@@ -1,0 +1,17 @@
+<title> Create a category </title>
+
+
+<style>
+    h1{
+        text-align: center;
+        margin-top: 50px;
+    }
+
+</style>
+<h1> Create a category </h1>
+
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+        <button><a href="{% url 'index' %}">Return to home</a></button>
